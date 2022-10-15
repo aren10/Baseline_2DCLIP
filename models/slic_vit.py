@@ -69,9 +69,9 @@ class SLICViT(nn.Module):
             im = Image.fromarray(im).convert('RGB')
             # im = im.resize((224, 224))
             masks, detection_areas = self.get_masks(np.array(im))
-            masks = torch.from_numpy(masks.astype(np.bool))#.cuda()
-            detection_areas = torch.from_numpy(detection_areas.astype(np.bool))#.cuda()
-            im = self.model.preprocess(im).unsqueeze(0)#.cuda()
+            masks = torch.from_numpy(masks.astype(np.bool)).cuda()
+            detection_areas = torch.from_numpy(detection_areas.astype(np.bool)).cuda()
+            im = self.model.preprocess(im).unsqueeze(0).cuda()
 
             image_features = self.model(im, detection_areas)
             image_features = torch.reshape(image_features, (image_features.shape[1], image_features.shape[2]))
@@ -91,12 +91,12 @@ class SLICViT(nn.Module):
             im = Image.fromarray(im).convert('RGB')
             im = im.resize((224, 224))
             masks, detection_areas = self.get_masks(np.array(im))
-            masks = torch.from_numpy(masks.astype(np.bool))#.cuda()
+            masks = torch.from_numpy(masks.astype(np.bool)).cuda()
             # masks = torch.from_numpy(masks.astype(np.bool))
 
-            detection_areas = torch.from_numpy(detection_areas.astype(np.bool))#.cuda()
+            detection_areas = torch.from_numpy(detection_areas.astype(np.bool)).cuda()
             # detection_areas = torch.from_numpy(detection_areas.astype(np.bool))
-            im = self.model.preprocess(im).unsqueeze(0)#.cuda()
+            im = self.model.preprocess(im).unsqueeze(0).cuda()
             # im = self.model.preprocess(im).unsqueeze(0)
             # print("preprocessed image:", im.shape)
 
@@ -105,7 +105,7 @@ class SLICViT(nn.Module):
             image_features = image_features.permute(0, 2, 1)
             print("features in get heatmap:", image_features.shape)
 
-            text = clip.tokenize([text])#.cuda()
+            text = clip.tokenize([text]).cuda()
             # text = clip.tokenize([text])
             text_features = self.model.encode_text(text)
 
@@ -223,7 +223,7 @@ class SLICViT(nn.Module):
             r,c,f = image_features_normalized.size()
             input = torch.empty(r, c, 1)
             query_map = torch.zeros_like(input)
-            text_tokenized = clip.tokenize([text])#.cuda()
+            text_tokenized = clip.tokenize([text]).cuda()
             text_features = torch.squeeze(self.model.encode_text(text_tokenized))
             text_features_normalized = text_features
             #text_features_normalized = (text_features - torch.min(text_features)) / (torch.max(text_features) - torch.min(text_features))
