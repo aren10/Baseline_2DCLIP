@@ -232,5 +232,5 @@ class SLICViT(nn.Module):
             #print(text_features_normalized)
             for i in range(r):
                 for j in range(c):
-                    query_map[i,j,0] = (torch.dot(image_features_normalized[i,j,:], text_features_normalized) / (np.linalg.norm(image_features_normalized[i,j,:]) * np.linalg.norm(text_features_normalized)))
+                    query_map[i,j,0] = (torch.dot(image_features_normalized[i,j,:], text_features) / (np.linalg.norm(image_features_normalized[i,j,:]) * np.linalg.norm(text_features)))
         return query_map
