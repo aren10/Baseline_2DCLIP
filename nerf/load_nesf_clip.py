@@ -163,6 +163,7 @@ def load_Nesf_CLIP_data(basedir, clip_basedir, env, use_CLIP = False):
     img_ids = []
     poses = []
     clips = []
+    count = 0
     for i in range(len(dataloader)):
         img = dataloader[i]["image"]
         pose = dataloader[i]["pose"]
@@ -185,6 +186,8 @@ def load_Nesf_CLIP_data(basedir, clip_basedir, env, use_CLIP = False):
             #print(clips_val)
             #print(clips_val.shape)
             clips.append(clips_val)
+            print(count)
+            count = count + 1
     """
     print(np.array(clips).shape)
     for i in range(len(dataloader)):
