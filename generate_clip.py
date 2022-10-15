@@ -38,7 +38,7 @@ if __name__=='__main__':
             np.save(root_path + "Nesf0_2D/"+filename[:-4]+"_image_clip_feature", image_clip_feature_normalized)
             print(filename+" saved")
 
-            """
+            
             image_id = "00080"
             image_clip_feature_normalized = torch.tensor(np.load("../data/Nesf0_2D/rgba_" + image_id + "_image_clip_feature.npy")) #[256, 256, 768]
             #print(image_clip_feature_normalized)
@@ -56,6 +56,6 @@ if __name__=='__main__':
             plt.imshow(query_map_3d)
             plt.imsave(root_path + "Nesf0_2D/"+image_id+".png", query_map_3d)
             exit(0)
-            """
+            
             
             
