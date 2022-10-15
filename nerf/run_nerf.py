@@ -938,10 +938,12 @@ def train(env, flag, test_file, i_weights):
                 #image_features_normalized = nerf_img_clip
                 image_features_normalized = gt_img_clip
                 text_features_normalized = gt_text_clip
+                text_features_normalized = text_features_normalized.to(torch.float)
+                image_features_normalized = image_features_normalized.to(torch.float)
                 #text_features_normalized = (text_features - torch.min(text_features)) / (torch.max(text_features) - torch.min(text_features))
                 for i in range(r):
                     for j in range(c):
-                        query_map[i,j,0] = (torch.dot(image_features_normalized[i,j,:], text_features_normalized) / (np.linalg.norm(image_features_normalized[i,j,:]) * np.linalg.norm(text_features_normalized)))
+                        query_map[i,j,0] = (torch.dot(image_features_normalized[i,j,:], text_features_normalized) / (np.linalg.norm(image_features_normalized[i,j,:].cpu().detach().numpy()) * np.linalg.norm(text_features_normalized.cpu().detach().numpy())))
                 query_map = query_map.cpu().float().numpy()
                 query_map = np.squeeze(query_map)
                 query_map_remapped = (query_map - np.min(query_map)) / (np.max(query_map) - np.min(query_map))
