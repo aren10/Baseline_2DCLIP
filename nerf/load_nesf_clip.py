@@ -211,6 +211,7 @@ def load_Nesf_CLIP_data(basedir, clip_basedir, env, use_CLIP = False):
     counts.append(counts[-1] + imgs.shape[0])
     all_imgs.append(imgs)
     all_poses.append(poses)
+    print("________done")
 
 
 
