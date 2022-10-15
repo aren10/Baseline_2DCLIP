@@ -477,6 +477,7 @@ def raw2outputs(raw, z_vals, rays_d, raw_noise_std=0, white_bkgd=False, pytest=F
     """
     #raw2alpha = lambda raw, dists, act_fn=F.relu: 1.-torch.exp(-act_fn(raw)*dists)
     raw2alpha = lambda raw, dists, act_fn=torch.sigmoid: 1.-torch.exp(-act_fn(raw)*dists)
+    #raw2alpha = lambda raw, dists, act_fn=torch.tanh: 1.-torch.exp(-act_fn(raw)*dists)
 
     dists = z_vals[...,1:] - z_vals[...,:-1]
     dists = torch.cat([dists, torch.Tensor([1e10]).expand(dists[...,:1].shape)], -1)  # [N_rays, N_samples]
@@ -506,7 +507,7 @@ def raw2outputs(raw, z_vals, rays_d, raw_noise_std=0, white_bkgd=False, pytest=F
     
     elif clip:
 
-        clip_s = torch.sigmoid(raw[...,:-1])
+        clip_s = torch.tanh(raw[...,:-1])
         #print("------raw")
         #print(raw)
         #print("____clip_s")
@@ -935,8 +936,8 @@ def train(env, flag, test_file, i_weights):
                 r,c,f = gt_img_clip.size()
                 input = torch.empty(r, c, 1)
                 query_map = torch.zeros_like(input)
-                #image_features_normalized = nerf_img_clip
-                image_features_normalized = gt_img_clip
+                image_features_normalized = nerf_img_clip
+                #image_features_normalized = gt_img_clip
                 text_features_normalized = gt_text_clip
                 text_features_normalized = text_features_normalized.to(torch.float)
                 image_features_normalized = image_features_normalized.to(torch.float)
@@ -962,7 +963,6 @@ def train(env, flag, test_file, i_weights):
                 imageio.mimwrite(os.path.join(testsavedir, 'video.mp4'), to8b(rgbs), fps=30, quality=8)
 
             return
-
 
 
 
@@ -1013,6 +1013,7 @@ def train(env, flag, test_file, i_weights):
     
     start = start + 1
     for i in trange(start, N_iters):
+        print("__________HELLO___________")
         time0 = time.time()
         # print("using batch:", use_batching)
 
