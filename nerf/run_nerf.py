@@ -935,7 +935,8 @@ def train(env, flag, test_file, i_weights):
                 r,c,f = gt_img_clip.size()
                 input = torch.empty(r, c, 1)
                 query_map = torch.zeros_like(input)
-                image_features_normalized = nerf_img_clip #gt_img_clip
+                #image_features_normalized = nerf_img_clip
+                image_features_normalized = gt_img_clip
                 text_features_normalized = gt_text_clip
                 #text_features_normalized = (text_features - torch.min(text_features)) / (torch.max(text_features) - torch.min(text_features))
                 for i in range(r):
