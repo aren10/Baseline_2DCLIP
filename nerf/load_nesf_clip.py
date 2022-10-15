@@ -178,7 +178,7 @@ def load_Nesf_CLIP_data(basedir, clip_basedir, env, use_CLIP = False):
             # saliencies.append(np.load(fname))
             # rgba_00042_image_clip_feature.npy
             fname = "rgba_" + index[-5:] + '_image_clip_feature.npy'
-            print(fname)
+            #print(fname)
             fname = os.path.join(clip_basedir, fname)
             #fname = '../data/Nesf0/rgba_00042_image_clip_feature.npy'
             clips_val = np.load(fname)
