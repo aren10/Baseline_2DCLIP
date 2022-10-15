@@ -19,7 +19,7 @@ if __name__=='__main__':
         'compactness': 50,
         'sigma': 0,
     }
-    model = SLICViT(**args)#.cuda()
+    model = SLICViT(**args).cuda()
 
     #root_path = '/users/aren10/data/'
     #data_path = root_path + '0/'
