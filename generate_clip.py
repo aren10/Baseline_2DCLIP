@@ -40,7 +40,7 @@ if __name__=='__main__':
 
             
             image_id = "00080"
-            image_clip_feature_normalized = torch.tensor(np.load("../data/Nesf0_2D/rgba_" + image_id + "_image_clip_feature.npy")) #[256, 256, 768]
+            image_clip_feature_normalized = torch.tensor(np.load("../data/Nesf0_2D/rgba_" + image_id + "_image_clip_feature.npy")).cuda() #[256, 256, 768]
             #print(image_clip_feature_normalized)
             #image_clip_feature_normalized = (image_clip_feature_normalized - torch.unsqueeze(torch.min(image_clip_feature_normalized, dim = -1)[0], dim = -1)) / (torch.unsqueeze(torch.max(image_clip_feature_normalized, dim = -1)[0], dim = -1) - torch.unsqueeze(torch.min(image_clip_feature_normalized, dim = -1)[0], dim = -1))
             query_map = model.verify(image_clip_feature_normalized, "chair", root_path).cpu().float().numpy()
