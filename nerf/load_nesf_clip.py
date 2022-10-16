@@ -305,12 +305,14 @@ def load_Nesf_CLIP_data(basedir, clip_basedir, env, use_CLIP = False):
     else:
         return imgs, poses, render_poses, [H, W, focal], i_split, near, far, K
 
-#if __name__== "__main__":
-    #load_Nesf_CLIP_data("../data/toybox-13/0")
+if __name__== "__main__":
+    imgs, clips, poses, render_poses, [H, W, focal], i_split, near, far, K = load_Nesf_CLIP_data("../data/toybox-13/0", "../data/Nesf0_2D/", "mac", use_CLIP= True)
+    
+    print(imgs[0].shape)
     # pt = Path()
 
     # dataset_dir = "/gpfs/data/ssrinath/ychen485/implicitSearch/implicitObjDetection/toybox-13/0"
-    # # p = pt.get(dataset_dir)
+    # p = pt.get(dataset_dir)
     # dataloader = Nesf_Dataset(dataset_dir)
 
     # print(dataloader[0]["pose"])
@@ -324,4 +326,4 @@ def load_Nesf_CLIP_data(basedir, clip_basedir, env, use_CLIP = False):
 
     #         print(key, " ", data_sample[key].shape)
 
-        # print("###########################################")
+    #     print("###########################################")
