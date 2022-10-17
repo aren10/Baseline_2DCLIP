@@ -818,6 +818,7 @@ def train(env, flag, test_file, i_weights):
 
     elif args.dataset_type == 'nesf_clip':
         if  args.with_clip:
+            print("______________start")
             images, clips, poses, render_poses, hwf, i_split, near, far, K = load_Nesf_CLIP_data(args.datadir, args.clip_datadir, args.env, True)
         else:
             images, poses, render_poses, hwf, i_split, near, far, K = load_Nesf_CLIP_data(args.datadir, args.clip_datadir, args.env, False)
@@ -934,6 +935,7 @@ def train(env, flag, test_file, i_weights):
                 nerf_img_clip = torch.tensor(np.squeeze(clips_ests_normalized[0,:,:,:].cpu().detach().numpy()))
                 gt_img_clip = torch.tensor(np.squeeze(clips_full[0,:,:,:]))
                 gt_text_clip = torch.tensor(np.load(args.root_path + "Nesf0_2D/" + args.text + "_clip_feature.npy"))
+                #nerf_query_map
                 r,c,f = gt_img_clip.size()
                 input = torch.empty(r, c, 1)
                 query_map = torch.zeros_like(input)
@@ -955,7 +957,31 @@ def train(env, flag, test_file, i_weights):
                 query_map_3d[:,:,1] = query_map_remapped
                 query_map_3d[:,:,2] = query_map_remapped
                 plt.imshow(query_map_3d)
-                plt.imsave(args.root_path + "Nesf0_2D/nerf_clip.png", query_map_3d)
+                plt.imsave(args.root_path + "Nesf0_2D/nerf_query_map.png", query_map_3d)
+                #gt_query_map
+                r,c,f = gt_img_clip.size()
+                input = torch.empty(r, c, 1)
+                query_map = torch.zeros_like(input)
+                #image_features_normalized = nerf_img_clip
+                image_features_normalized = gt_img_clip
+                text_features_normalized = gt_text_clip
+                text_features_normalized = text_features_normalized.to(torch.float)
+                image_features_normalized = image_features_normalized.to(torch.float)
+                #text_features_normalized = (text_features - torch.min(text_features)) / (torch.max(text_features) - torch.min(text_features))
+                for i in range(r):
+                    for j in range(c):
+                        query_map[i,j,0] = (torch.dot(image_features_normalized[i,j,:], text_features_normalized) / (np.linalg.norm(image_features_normalized[i,j,:].cpu().detach().numpy()) * np.linalg.norm(text_features_normalized.cpu().detach().numpy())))
+                query_map = query_map.cpu().float().numpy()
+                query_map = np.squeeze(query_map)
+                query_map_remapped = (query_map - np.min(query_map)) / (np.max(query_map) - np.min(query_map))
+                r,c = np.shape(query_map_remapped)
+                query_map_3d = np.zeros((r,c,3))
+                query_map_3d[:,:,0] = query_map_remapped
+                query_map_3d[:,:,1] = query_map_remapped
+                query_map_3d[:,:,2] = query_map_remapped
+                plt.imshow(query_map_3d)
+                plt.imsave(args.root_path + "Nesf0_2D/gt_query_map.png", query_map_3d)
+
                 
 
             else:
